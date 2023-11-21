@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 function Menu() {
   const navigate = useNavigate();
-  const usuario = localStorage.getItem("usuario").replace(".", " ");
+  // const usuario = localStorage.getItem("usuario").replace(".", " ");
   const cerrarSesion = () => {
     localStorage.clear();
     navigate("/");
@@ -19,67 +19,50 @@ function Menu() {
   return (
     <div>
       <h1 style={{ marginTop: 0, marginBottom: 20 }}>
-        Bienvenid@ 👋 {usuario}
+        {/* Bienvenid@ 👋 {usuario} */}
       </h1>
       <div
         style={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "space-between",
         }}
       >
         <div
           style={{ cursor: "pointer" }}
           onClick={() => {
-            navigate("/departamentos");
+            navigate("/equipos");
           }}
         >
-          <h4>Departamento</h4>
+          <h4>Equipos</h4>
           {/* <img src={depto} alt="Departamento" className="imgMenu" /> */}
         </div>
         <div
           style={{ cursor: "pointer" }}
           onClick={() => {
-            navigate("/crearCartera");
+            navigate("/tecnicos");
           }}
         >
-          <h4>Cartera</h4>
+          <h4>Técnicos</h4>
           {/* <img src={cartera} alt="Cartera" className="imgMenu" /> */}
         </div>
         <div
           style={{ cursor: "pointer" }}
           onClick={() => {
-            navigate("/empleados");
+            navigate("/ubicacion");
           }}
         >
-          <h4>Empleados</h4>
+          <h4>Ubicaciones</h4>
           {/* <img src={empleado} alt="Empleado" className="imgMenu" /> */}
         </div>
         <div
           style={{ cursor: "pointer" }}
           onClick={() => {
-            navigate("/llamadas");
+            navigate("/ficha");
           }}
         >
-          <h4>Llamadas de Atención</h4>
+          <h4>Ficha de Responsabilidad</h4>
           {/* <img src={llamada} alt="Llamada de atención" className="imgMenu" /> */}
-        </div>
-        <div
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            navigate("/puestos");
-          }}
-        >
-          <h4>Puestos</h4>
-          {/* <img src={puesto} alt="Puesto" className="imgMenu" /> */}
-        </div>
-        <div
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            navigate("/usuarios");
-          }}
-        >
-          <h4>Usuarios</h4>
-          {/* <img src={usuarioImg} alt="Usuario" className="imgMenu" /> */}
         </div>
         <div style={{ cursor: "pointer" }} onClick={cerrarSesion}>
           <h4>Cerrar Sesión</h4>
