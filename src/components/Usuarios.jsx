@@ -1,34 +1,26 @@
 import * as React from "react";
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  TextField,
-} from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
-import { DataGrid, GridToolbar, esES } from "@mui/x-data-grid";
+import { DataGrid, esES } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import MenuTop from "./MenuTop";
-
+// import MenuTop from "./MenuTop";
 
 const columns = [
+  { field: "id", headerName: "ID", width: 90 },
   {
-    field: "nombreCompleto",
-    headerName: "Nombre Completo",
-    width: 300,
-    valueGetter: (tecnicos) =>
-      tecnicos.row.attributes.nombreCompleto,
+    field: "username",
+    headerName: "Usuario",
+    width: 200,
   },
   {
-    field: "correo",
+    field: "email",
     headerName: "Correo",
     width: 300,
-    valueGetter: (tecnicos) =>
-      tecnicos.row.attributes.correo,
   },
 ];
 
@@ -37,51 +29,44 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 300,
+  width: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
 
-export default function Tecnicos() {
+export default function Usuarios() {
   const { register, handleSubmit } = useForm();
 
-   const page = "http://localhost:1337";
+  const page = "http://localhost:1337";
 
   //modal
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const [updNombre, setUpdNombre] = useState("");
+  const [updUser, setUpdUser] = useState("");
   const [updCorreo, setUpdCorreo] = useState("");
   const handleOpen2 = () => {
     const rowText = rowSelected.toString();
     axios
-      .get(`${page}/api/tecnicos/${rowText}/?populate=*`, config)
-      .then((res) => 
-       {
-         setUpdNombre(res.data.data.attributes.nombreCompleto);
-         setUpdCorreo(res.data.data.attributes.correo);
-       }
-      )
+      .get(`${page}/api/users/${rowText}`, config)
+      .then((res) => {
+        setUpdUser(res.data.username);
+        setUpdCorreo(res.data.email);
+      })
       .catch(function (error) {
         console.log(error);
       });
     setOpen2(true);
-    console.log(updCorreo);
   };
+
   const handleClose = () => setOpen(false);
   const handleClose2 = () => setOpen2(false);
-  const [correo, setCorreo] = useState([]);
 
-
-
-  const [tecnicos, setTecnicos] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
   const token = localStorage.getItem("token");
   const [rowSelected, setRowSelected] = useState([]);
-
-
 
   const config = {
     headers: {
@@ -91,8 +76,8 @@ export default function Tecnicos() {
 
   const update = () => {
     axios
-      .get(`${page}/api/tecnicos?populate=*&filters[estado][$eq]=true`, config)
-      .then((res) => setTecnicos(res.data.data))
+      .get(`${page}/api/users?filters[blocked][$eq]=false`, config)
+      .then((res) => setUsuarios(res.data))
       .catch(function (error) {
         console.log(error);
       });
@@ -100,8 +85,8 @@ export default function Tecnicos() {
 
   useEffect(() => {
     axios
-      .get(`${page}/api/tecnicos?populate=*&filters[estado][$eq]=true`, config)
-      .then((res) => setTecnicos(res.data.data))
+      .get(`${page}/api/users?populate=*&filters[blocked][$eq]=false`, config)
+      .then((res) => setUsuarios(res.data))
       .catch(function (error) {
         console.log(error);
       });
@@ -109,32 +94,32 @@ export default function Tecnicos() {
 
   const borrar = () => {
     const rowText = rowSelected.toString();
-
     const dataJson = {
-      data: {
-        estado: false,
-      },
+      blocked: true,
     };
+
     axios
-      .put(`${page}/api/tecnicos/${rowText}`, dataJson, config)
+      .put(`${page}/api/users/${rowText}`, dataJson, config)
       .then(() => update())
       .catch(function (error) {
         console.log(error);
       });
   };
   const submit = (data) => {
- 
-    const nameTexto = data.nombreCompleto;
-    const correoTexto = data.correo;
+    const userTexto = data.identifierUser;
+    const emailTexto = data.identifierEmail;
+    const passTexto = data.identifierPassword;
+
+    console.log(data);
 
     const dataJson = {
-      data: {
-        nombreCompleto: nameTexto,
-        correo: correoTexto
-       },
+      username: userTexto,
+      email: emailTexto,
+      password: passTexto,
     };
+
     axios
-      .post(`${page}/api/tecnicos`, dataJson, config)
+      .post(`${page}/api/auth/local/register`, dataJson)
       .then(() => {
         handleClose(false);
         update();
@@ -147,19 +132,18 @@ export default function Tecnicos() {
   };
 
   const updRegistro = (data) => {
-    const nameTexto = data.nombreCompleto;
-    const correoTexto = data.correo;
-
+    const userTexto = data.identifierUser;
+    const emailTexto = data.identifierEmail;
+    const passTexto = data.identifierPassword;
     const rowText = rowSelected.toString();
-    const dataJson = {
-      data: {
-        nombreCompleto: nameTexto,
-        correo: correoTexto
-      },
-    };
 
+    const dataJson = {
+      username: userTexto,
+      email: emailTexto,
+      password: passTexto,
+    };
     axios
-      .put(`${page}/api/tecnicos/${rowText}`, dataJson, config)
+      .put(`${page}/api/users/${rowText}`, dataJson, config)
       .then(() => {
         handleClose2(false);
         update();
@@ -170,16 +154,11 @@ export default function Tecnicos() {
         }
       });
   };
-  const [sortModel, setSortModel] = useState([
-    {
-      field: "nombreCompleto",
-      sort: "asc",
-    },
-  ]);
 
   return (
     <>
-    <MenuTop/>
+      <MenuTop />
+
       <Box sx={{ height: 375, width: "100%" }}>
         <div style={{ display: "flex", justifyContent: "space-around" }}>
           <Button
@@ -211,24 +190,28 @@ export default function Tecnicos() {
             <form onSubmit={handleSubmit(submit)}>
               <div>
                 <TextField
-                  style={{ width: "100%", marginBottom: 10 }}
-                  id="nombreCompleto"
-                  label="Nombre Completo"
+                  style={{ marginBottom: 10 }}
+                  id="username"
+                  label="Usuario"
                   variant="outlined"
                   type="text"
-                  {...register("nombreCompleto", { required: true })}
+                  {...register("identifierUser", { required: true })}
                 />
-
-                  <TextField
-                    style={{ width: "100%", marginBottom: 10 }}
-                    id="correo"
-                    label="Correo"
-                    variant="outlined"
-                    type="text"
-                    {...register("correo", { required: true })}
-                  >
-                  </TextField>
-
+                <TextField
+                  style={{ marginBottom: 10 }}
+                  id="email"
+                  label="Correo Electronico"
+                  variant="outlined"
+                  type="email"
+                  {...register("identifierEmail", { required: true })}
+                />
+                <TextField
+                  id="password"
+                  label="Contraseña"
+                  variant="outlined"
+                  type="password"
+                  {...register("identifierPassword", { required: true })}
+                />
               </div>
               <Button
                 variant="contained"
@@ -250,24 +233,29 @@ export default function Tecnicos() {
             <form onSubmit={handleSubmit(updRegistro)}>
               <div>
                 <TextField
-                  helperText={updNombre}
-                  style={{ width: "100%", marginBottom: 10 }}
-                  id="nombreCompleto"
-                  label="Nombre Completo"
+                  helperText={updUser}
+                  id="username"
+                  label="Usuario"
                   variant="outlined"
                   type="text"
-                  {...register("nombreCompleto", { required: true })}
+                  {...register("identifierUser")}
                 />
-              </div>
                 <TextField
                   helperText={updCorreo}
-                  style={{ width: "100%", marginBottom: 10 }}
-                  id="correo"
-                  label="Correo"
+                  id="email"
+                  label="Correo Electronico"
                   variant="outlined"
-                  type="text"
-                  {...register("correo", { required: true })}
+                  type="email"
+                  {...register("identifierEmail")}
                 />
+                <TextField
+                  id="password"
+                  label="Contraseña"
+                  variant="outlined"
+                  type="password"
+                  {...register("identifierPassword")}
+                />
+              </div>
               <Button
                 variant="contained"
                 type="submit"
@@ -280,7 +268,7 @@ export default function Tecnicos() {
         </Modal>
         <DataGrid
           style={{ marginTop: 10 }}
-          rows={tecnicos}
+          rows={usuarios}
           columns={columns}
           initialState={{
             pagination: {
@@ -289,19 +277,11 @@ export default function Tecnicos() {
               },
             },
           }}
-          sortModel={sortModel}
           pageSizeOptions={[10]}
-          loading={!tecnicos.length}
+          loading={!usuarios.length}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           onRowSelectionModelChange={(data) => {
             setRowSelected(data);
-          }}
-          slots={{ toolbar: GridToolbar }}
-          componentsProps={{
-            toolbar: {
-              printOptions: { disableToolbarButton: true },
-              showQuickFilter: true,
-            },
           }}
         />
       </Box>

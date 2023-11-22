@@ -1,17 +1,17 @@
 import { Button, Grid, TextField } from "@mui/material";
-import Box from "@mui/material/Box";
 import { DataGrid, esES } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
+import MenuTop from "./MenuTop";
 
 const columns = [
   {
     field: "descripcion",
     headerName: "Descripción",
-    minWidth: "90%",
+    width: 600,
     valueGetter: (equipos) => equipos.row.attributes.descripcion,
   },
 ];
@@ -136,6 +136,7 @@ function Equipos() {
 
   return (
     <>
+    <MenuTop/>
       <Grid sx={{ height: 400, width: "100%" }}>
         <div style={{ display: "flex", justifyContent: "space-around" }}>
           <Button variant={"contained"} onClick={handleOpen}>

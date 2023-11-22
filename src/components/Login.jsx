@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { TextField, Button } from "@mui/material";
 import logoInicio from "../assets/iungo.png";
+import Footer from "./Footer";
 
 function Login() {
   const { register, handleSubmit, reset } = useForm();
@@ -72,6 +73,7 @@ function Login() {
           Borrar
         </Button>
       </form>
+      <Footer/>
     </div>
   );
 }

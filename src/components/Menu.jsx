@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 function Menu() {
   const navigate = useNavigate();
-  // const usuario = localStorage.getItem("usuario").replace(".", " ");
+  const usuario = localStorage.getItem("usuario").replace(".", " ");
   const cerrarSesion = () => {
     localStorage.clear();
     navigate("/");
@@ -18,9 +18,9 @@ function Menu() {
 
   return (
     <div>
-      <h1 style={{ marginTop: 0, marginBottom: 20 }}>
-        {/* Bienvenid@ 👋 {usuario} */}
-      </h1>
+        <h2 style={{ marginTop: 0, marginBottom: 20 }}>
+        Bienvenid@ 👋 {usuario}
+      </h2>
       <div
         style={{
           display: "flex",
@@ -62,6 +62,15 @@ function Menu() {
           }}
         >
           <h4>Ficha de Responsabilidad</h4>
+          {/* <img src={llamada} alt="Llamada de atención" className="imgMenu" /> */}
+        </div>
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            navigate("/usuarios");
+          }}
+        >
+          <h4>Usuarios</h4>
           {/* <img src={llamada} alt="Llamada de atención" className="imgMenu" /> */}
         </div>
         <div style={{ cursor: "pointer" }} onClick={cerrarSesion}>
