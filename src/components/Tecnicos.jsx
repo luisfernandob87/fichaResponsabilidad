@@ -1,8 +1,6 @@
 import * as React from "react";
 import {
   Button,
-  FormControl,
-  InputLabel,
   TextField,
 } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -13,8 +11,6 @@ import axios from "axios";
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import MenuTop from "./MenuTop";
-
-
 const columns = [
   {
     field: "nombreCompleto",
@@ -31,7 +27,6 @@ const columns = [
       tecnicos.row.attributes.correo,
   },
 ];
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -75,13 +70,9 @@ export default function Tecnicos() {
   const handleClose2 = () => setOpen2(false);
   const [correo, setCorreo] = useState([]);
 
-
-
   const [tecnicos, setTecnicos] = useState([]);
   const token = localStorage.getItem("token");
   const [rowSelected, setRowSelected] = useState([]);
-
-
 
   const config = {
     headers: {
@@ -106,7 +97,6 @@ export default function Tecnicos() {
         console.log(error);
       });
   }, []);
-
   const borrar = () => {
     const rowText = rowSelected.toString();
 
@@ -176,7 +166,6 @@ export default function Tecnicos() {
       sort: "asc",
     },
   ]);
-
   return (
     <>
     <MenuTop/>

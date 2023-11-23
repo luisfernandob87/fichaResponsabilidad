@@ -8,6 +8,9 @@ import Tecnicos from "./components/Tecnicos";
 import Ubicacion from "./components/Ubicacion";
 import Ficha from "./components/Ficha";
 import Usuarios from "./components/Usuarios";
+import CrearFicha from "./components/CrearFicha";
+import ConsultarFicha from "./components/ConsultarFicha";
+import DetalleFicha from "./components/DetalleFicha";
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
         <Route path="/ubicacion" element={<Ubicacion />} />
         <Route path="/ficha" element={<Ficha />} />
         <Route path="/usuarios" element={<Usuarios />} />
+        <Route path="/crear" element={<CrearFicha />} />
+        <Route path="/consultar" element={<ConsultarFicha />} />
+        <Route path="/detalleFicha" element={<DetalleFicha />} />
         </Route>
       </Routes>
     </HashRouter>

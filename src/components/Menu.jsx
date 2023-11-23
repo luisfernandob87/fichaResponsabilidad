@@ -61,7 +61,7 @@ function Menu() {
             navigate("/ficha");
           }}
         >
-          <h4>Ficha de Responsabilidad</h4>
+          <h4>Documentos de Responsabilidad</h4>
           {/* <img src={llamada} alt="Llamada de atención" className="imgMenu" /> */}
         </div>
         <div
