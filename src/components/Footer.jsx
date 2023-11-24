@@ -1,10 +1,9 @@
-
 function Footer() {
   return (
     <>
-      <span>Powered by Luis Morales</span>
+      <span style={{ fontSize: 8 }}>Powered by Luis Morales</span>
     </>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

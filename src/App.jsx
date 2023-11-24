@@ -18,15 +18,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route element={<ProtectedRoutes />}>
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/equipos" element={<Equipos />} />
-        <Route path="/tecnicos" element={<Tecnicos />} />
-        <Route path="/ubicacion" element={<Ubicacion />} />
-        <Route path="/ficha" element={<Ficha />} />
-        <Route path="/usuarios" element={<Usuarios />} />
-        <Route path="/crear" element={<CrearFicha />} />
-        <Route path="/consultar" element={<ConsultarFicha />} />
-        <Route path="/detalleFicha" element={<DetalleFicha />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/equipos" element={<Equipos />} />
+          <Route path="/tecnicos" element={<Tecnicos />} />
+          <Route path="/ubicacion" element={<Ubicacion />} />
+          <Route path="/ficha" element={<Ficha />} />
+          <Route path="/usuarios" element={<Usuarios />} />
+          <Route path="/crear" element={<CrearFicha />} />
+          <Route path="/consultar" element={<ConsultarFicha />} />
+          <Route path="/detalleFicha" element={<DetalleFicha />} />
         </Route>
       </Routes>
     </HashRouter>
