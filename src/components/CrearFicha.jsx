@@ -5,8 +5,10 @@ import { useForm } from "react-hook-form";
 import moment from "moment";
 import Swal from "sweetalert2";
 import logo from "../assets/iungo.png";
+import { useNavigate } from "react-router-dom";
 
 function CrearFicha() {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const usuario = localStorage.getItem("usuario");
 
@@ -89,6 +91,32 @@ function CrearFicha() {
     dataResponsable = responsable.current.toDataURL();
   }
 
+  const selectedEquipoId =
+    selectedEquipo.trim().length > 0
+      ? equipos.find(
+          (equipo) => equipo.attributes.descripcion === selectedEquipo
+        )?.id || ""
+      : "";
+
+  const selectedResponsableId =
+    selectedResponsable.trim().length > 0
+      ? tecnicos.find(
+          (tecnico) => tecnico.attributes.nombreCompleto === selectedResponsable
+        )?.id || ""
+      : "";
+  const selectedSupervisorId =
+    selectedSupervisor.trim().length > 0
+      ? tecnicos.find(
+          (tecnico) => tecnico.attributes.nombreCompleto === selectedSupervisor
+        )?.id || ""
+      : "";
+  const selectedUbicacionId =
+    selectedUbicacion.trim().length > 0
+      ? ubicaciones.find(
+          (ubicacion) => ubicacion.attributes.descripcion === selectedUbicacion
+        )?.id || ""
+      : "";
+
   const submit = (data) => {
     if (dataResponsable == "" || dataEncargado == "") {
       Swal.fire({
@@ -101,17 +129,17 @@ function CrearFicha() {
         data: {
           fechaEntrega: data.fechaEntrega,
           equipo: {
-            id: selectedEquipo,
+            id: selectedEquipoId,
           },
           serie: data.serie,
           ubicacion: {
-            id: selectedUbicacion,
+            id: selectedUbicacionId,
           },
           responsable: {
-            id: selectedResponsable,
+            id: selectedResponsableId,
           },
           supervisor: {
-            id: selectedSupervisor,
+            id: selectedSupervisorId,
           },
           motivo: data.motivo,
           fechaDevolucion: data.fechaDevolucion,
@@ -119,15 +147,14 @@ function CrearFicha() {
           firmaEncargado: dataEncargado,
         },
       };
-      console.log(dataJson);
       axios
         .post(`${page}/api/fichas`, dataJson, config)
-        .then((res) => {
+        .then(() => {
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
             showConfirmButton: false,
-            timer: 3000,
+            timer: 2000,
             timerProgressBar: true,
             didOpen: (toast) => {
               toast.addEventListener("mouseenter", Swal.stopTimer);
@@ -139,19 +166,20 @@ function CrearFicha() {
             icon: "success",
             title: "Datos ingresados",
           });
-
-          console.log(res);
         })
         .catch(function (error) {
           console.log(error);
         });
-      // reset();
-      // dataEncargado.current.clear();
-      // dataResponsable.current.clear();
-      // setSelectedEquipo("");
-      // setSelectedResponsable("");
-      // setSelectedSupervisor("");
-      // setSelectedUbicacion("");
+      reset();
+      encargado.current.clear();
+      responsable.current.clear();
+      setSelectedEquipo("");
+      setSelectedResponsable("");
+      setSelectedSupervisor("");
+      setSelectedUbicacion("");
+      setTimeout(() => {
+        navigate("/consultar");
+      }, 2500);
     }
   };
 
@@ -220,8 +248,8 @@ function CrearFicha() {
           <p style={{ margin: 5, textAlign: "start" }}>
             Equipo o herramienta:{" "}
             <input
-              id="selectEmpleado"
-              {...register("empleado", { required: true })}
+              id="selectEquipo"
+              {...register("equipo", { required: true })}
               list="equipos"
               onChange={handleEquipo}
               value={selectedEquipo}
@@ -279,16 +307,18 @@ function CrearFicha() {
           </p>
         </div>
         <div
-          style={{
-            display: "flex",
-            gap: 10,
-            marginTop: 20,
-            justifyContent: "space-around",
-          }}
+          className="containerFirmas"
+          // style={{
+          //   display: "flex",
+          //   flexDirection: "column",
+          //   gap: 10,
+          //   marginTop: 20,
+          //   justifyContent: "space-around",
+          // }}
         >
           <div
             style={{
-              width: "25%",
+              width: 200,
               borderWidth: 1,
               borderStyle: "solid",
               borderRadius: 10,
@@ -314,7 +344,7 @@ function CrearFicha() {
           </div>
           <div
             style={{
-              width: "25%",
+              width: 200,
               borderWidth: 1,
               borderStyle: "solid",
               borderRadius: 10,

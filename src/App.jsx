@@ -11,6 +11,7 @@ import Usuarios from "./components/Usuarios";
 import CrearFicha from "./components/CrearFicha";
 import ConsultarFicha from "./components/ConsultarFicha";
 import DetalleFicha from "./components/DetalleFicha";
+import RecepcionEquipo from "./components/RecepcionEquipo";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/crear" element={<CrearFicha />} />
           <Route path="/consultar" element={<ConsultarFicha />} />
           <Route path="/detalleFicha" element={<DetalleFicha />} />
+          <Route path="/recepcion" element={<RecepcionEquipo />} />
         </Route>
       </Routes>
     </HashRouter>
